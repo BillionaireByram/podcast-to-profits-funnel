@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Deliverables | Brendan Boyd x Digital Flo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-glow: rgba(139, 92, 246, 0.4);
+            --accent: #06B6D4;
+            --success: #10B981;
+            --bg-dark: #030014;
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --bg-glass-hover: rgba(255, 255, 255, 0.08);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --gradient-primary: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
+            --gradient-success: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .logo-divider {
+            width: 32px;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: clamp(32px, 5vw, 44px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .header h1 span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: var(--bg-glass-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Deliverable List */
+        .deliverable-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .deliverable-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .deliverable-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .deliverable-check {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--gradient-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .deliverable-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .deliverable-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .tech-item {
+            text-align: center;
+            padding: 24px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+        }
+
+        .tech-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .tech-item h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .tech-item p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: var(--border-glass);
+        }
+
+        .timeline-item {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin: 0 auto 12px;
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: var(--gradient-primary);
+            border-color: transparent;
+        }
+
+        .timeline-item h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-item p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Investment */
+        .investment-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-color: rgba(139, 92, 246, 0.2);
+            text-align: center;
+        }
+
+        .investment-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .investment-price {
+            font-size: 56px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .investment-note {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .investment-includes {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .include-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .include-item span {
+            color: var(--success);
+        }
+
+        /* Bonus */
+        .bonus-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .bonus-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 16px;
+        }
+
+        .bonus-content {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .bonus-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: var(--gradient-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .bonus-text h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .bonus-text p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .bonus-value {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .bonus-value .original {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .bonus-value .free {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 48px 0;
+        }
+
+        .cta-section p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px -10px var(--primary-glow);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                flex-direction: column;
+                gap: 24px;
+                padding: 0;
+            }
+
+            .timeline::before {
+                display: none;
+            }
+
+            .bonus-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .bonus-value {
+                margin-left: 0;
+                text-align: center;
+            }
+
+            .investment-includes {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-row">
+                <span class="logo">Brendan Boyd</span>
+                <div class="logo-divider"></div>
+                <span class="logo">Digital Flo</span>
+            </div>
+            <span class="badge">📋 Project Scope</span>
+            <h1>AI Webinar Flo<br><span>Deliverables Breakdown</span></h1>
+            <p>Everything you need to automate your $3K "Podcast to Cash" offer and scale without lifting a finger.</p>
+        </div>
+
+        <!-- Core Platform -->
+        <div class="glass-card">
+            <div class="section-title">
+                <div class="section-icon">🎥</div>
+                <div>
+                    <h2>Custom Auto-Webinar Platform</h2>
+                    <p>Your own branded webinar system with deep analytics</p>
+                </div>
+            </div>
+            <div class="deliverable-list">
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Branded Registration Pages</h3>
+                        <p>High-converting landing pages that match your brand. Mobile-optimized with countdown timers and social proof.</p>
+                    </div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Auto-Webinar Room</h3>
+                        <p>Professional webinar experience with live chat simulation, viewer count, and timed CTAs that unlock based on watch progress.</p>
+                    </div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Post-Webinar Offer Flow</h3>
+                        <p>Seamless transition to your checkout. Self-liquidating offer pages, order bumps, and payment plan options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="glass-card">
+            <div class="section-title">
+                <div class="section-icon">📊</div>
+                <div>
+                    <h2>Real-Time Analytics Dashboard</h2>
+                    <p>Track every click, view, and conversion in one place</p>
+                </div>
+            </div>
+            <div class="deliverable-list">
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Full Funnel Tracking</h3>
+                        <p>Ad click → Registration → Show-up → Watch % → Purchase. See your entire funnel with conversion rates at every step.</p>
+                    </div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Watch Time Heatmap</h3>
+                        <p>See exactly where viewers drop off. Identify weak spots in your presentation and optimize for higher completion.</p>
+                    </div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Individual Attendee Tracking</h3>
+                        <p>Know who watched what, for how long, and whether they purchased. Perfect for sales team follow-up.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automation -->
+        <div class="glass-card">
+            <div class="section-title">
+                <div class="section-icon">⚡</div>
+                <div>
+                    <h2>Behavior-Based Automation</h2>
+                    <p>Automated follow-up sequences that convert</p>
+                </div>
+            </div>
+            <div class="deliverable-list">
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Smart Email Sequences</h3>
+                        <p>"You only watched 8 minutes..." — Personalized follow-ups based on exactly how much they watched and what actions they took.</p>
+                    </div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Replay Reminders</h3>
+                        <p>Automated sequence for no-shows and partial viewers. Multiple touchpoints to get them back to the replay.</p>
+                    </div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-check">✓</div>
+                    <div class="deliverable-content">
+                        <h3>Sales Team Alerts</h3>
+                        <p>Instant notifications when high-intent viewers complete the webinar. Your team calls them while they're hot.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="glass-card">
+            <div class="section-title">
+                <div class="section-icon">🛠️</div>
+                <div>
+                    <h2>Built With Modern Tech</h2>
+                    <p>Fast, reliable, and scales with you</p>
+                </div>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">⚡</div>
+                    <h3>Edge Hosting</h3>
+                    <p>Lightning-fast load times globally</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🔒</div>
+                    <h3>Enterprise Security</h3>
+                    <p>SSL, encrypted data, GDPR ready</p>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📱</div>
+                    <h3>Mobile-First</h3>
+                    <p>Perfect on every device</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="glass-card">
+            <div class="section-title">
+                <div class="section-icon">📅</div>
+                <div>
+                    <h2>Delivery Timeline</h2>
+                    <p>From kickoff to launch</p>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item active">
+                    <div class="timeline-dot">📝</div>
+                    <h4>Intake Form</h4>
+                    <p>Day 1</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">🎨</div>
+                    <h4>Design Review</h4>
+                    <p>Day 3</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">🔧</div>
+                    <h4>Build & Test</h4>
+                    <p>Day 5-7</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">🚀</div>
+                    <h4>Launch</h4>
+                    <p>Day 10</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bonus -->
+        <div class="glass-card bonus-card">
+            <span class="bonus-badge">🎁 INCLUDED BONUS</span>
+            <div class="bonus-content">
+                <div class="bonus-icon">🤖</div>
+                <div class="bonus-text">
+                    <h3>AI Business Assistant (Slack)</h3>
+                    <p>Ask questions about your data, get predictions, receive daily insights — all in Slack. Free for 60 days, then small hosting fee.</p>
+                </div>
+                <div class="bonus-value">
+                    <div class="original">$500/mo value</div>
+                    <div class="free">FREE</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment -->
+        <div class="glass-card investment-card">
+            <div class="investment-label">Total Investment</div>
+            <div class="investment-price">$6,000</div>
+            <div class="investment-note">One-time build fee • Payment plans available</div>
+            <div class="investment-includes">
+                <div class="include-item">
+                    <span>✓</span> Full funnel build
+                </div>
+                <div class="include-item">
+                    <span>✓</span> Analytics dashboard
+                </div>
+                <div class="include-item">
+                    <span>✓</span> Email automation
+                </div>
+                <div class="include-item">
+                    <span>✓</span> 60-day AI assistant
+                </div>
+                <div class="include-item">
+                    <span>✓</span> Launch support
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <p>Ready to automate your $3K offer and scale to $100K+?</p>
+            <a href="#" class="btn-cta">
+                Let's Build It
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Brendan Boyd x Digital Flo • AI Webinar Flo Build • February 2026</p>
+        </div>
+    </div>
+</body>
+</html>
