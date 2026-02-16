@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're In! | Podcast to Profits Workshop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --accent: #F59E0B;
+            --success: #22C55E;
+            --bg-dark: #0A0A0F;
+            --bg-card: #13131A;
+            --bg-elevated: #1A1A24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        /* Success Animation */
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon svg {
+            width: 50px;
+            height: 50px;
+            color: var(--success);
+        }
+
+        .checkmark {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            stroke-width: 3;
+            stroke: var(--success);
+            stroke-miterlimit: 10;
+            animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+        }
+
+        h1 {
+            font-size: clamp(32px, 5vw, 44px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        h1 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        /* Workshop Details Card */
+        .details-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .details-card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .detail-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .detail-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Calendar Buttons */
+        .calendar-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .cal-btn:hover {
+            background: var(--bg-elevated);
+            border-color: var(--primary);
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .next-steps h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Social Share */
+        .share-section {
+            margin-bottom: 32px;
+        }
+
+        .share-section p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+
+        /* Purchased Bonus */
+        .bonus-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 32px;
+            display: none;
+        }
+
+        .bonus-card.show {
+            display: block;
+        }
+
+        .bonus-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .bonus-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .access-btn {
+            display: inline-flex;
+            padding: 14px 28px;
+            background: var(--accent);
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .access-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .calendar-buttons {
+                flex-direction: column;
+            }
+
+            .cal-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+
+        <h1>You're In, <span id="userName">Friend</span>!</h1>
+        <p class="subtitle">Get ready to transform your podcast into a profit-generating machine.</p>
+
+        <!-- Quick-Start Kit Access (shown if purchased) -->
+        <div class="bonus-card" id="bonusCard">
+            <h2>🎁 Your Quick-Start Kit is Ready!</h2>
+            <p>Thank you for your purchase! Access your Podcast Monetization Quick-Start Kit instantly.</p>
+            <a href="#" class="access-btn">Access Your Quick-Start Kit →</a>
+        </div>
+
+        <!-- Workshop Details -->
+        <div class="details-card">
+            <h2>📅 Workshop Details</h2>
+            
+            <div class="detail-row">
+                <div class="detail-icon">📆</div>
+                <div class="detail-content">
+                    <h3>Date</h3>
+                    <p id="workshopDate">Thursday, February 20, 2026</p>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-icon">🕖</div>
+                <div class="detail-content">
+                    <h3>Time</h3>
+                    <p>7:30 PM EST / 4:30 PM PST</p>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-icon">💻</div>
+                <div class="detail-content">
+                    <h3>Where</h3>
+                    <p>Online via Zoom (link sent to your email)</p>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-icon">⏱️</div>
+                <div class="detail-content">
+                    <h3>Duration</h3>
+                    <p>Approximately 60-90 minutes</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add to Calendar -->
+        <div class="calendar-buttons">
+            <a href="#" class="cal-btn" id="googleCal">
+                <span>📅</span> Google Calendar
+            </a>
+            <a href="#" class="cal-btn" id="outlookCal">
+                <span>📅</span> Outlook
+            </a>
+            <a href="#" class="cal-btn" id="appleCal">
+                <span>📅</span> Apple Calendar
+            </a>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="next-steps">
+            <h2>What to Do Next</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Check Your Email</h3>
+                    <p>We've sent you a confirmation with all the details and your unique Zoom link.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Add It to Your Calendar</h3>
+                    <p>Click one of the buttons above so you don't forget!</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Show Up Ready</h3>
+                    <p>Bring a notebook and come prepared to take action on what you learn.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Share -->
+        <div class="share-section">
+            <p>Know another podcaster who needs this? Share the love:</p>
+            <div class="social-buttons">
+                <a href="#" class="social-btn" onclick="shareTwitter()">𝕏</a>
+                <a href="#" class="social-btn" onclick="shareFacebook()">f</a>
+                <a href="#" class="social-btn" onclick="shareLinkedIn()">in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for purchased parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('purchased') === 'true') {
+            document.getElementById('bonusCard').classList.add('show');
+        }
+
+        // Personalization
+        const regData = localStorage.getItem('registrationData');
+        if (regData) {
+            const data = JSON.parse(regData);
+            if (data.firstName) {
+                document.getElementById('userName').textContent = data.firstName;
+            }
+        }
+
+        // Calculate next Thursday
+        function getNextThursday() {
+            const now = new Date();
+            const day = now.getDay();
+            const daysUntilThursday = (4 - day + 7) % 7 || 7;
+            const nextThursday = new Date(now);
+            nextThursday.setDate(now.getDate() + daysUntilThursday);
+            return nextThursday;
+        }
+
+        const workshopDate = getNextThursday();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('workshopDate').textContent = workshopDate.toLocaleDateString('en-US', options);
+
+        // Calendar links
+        const title = encodeURIComponent('Podcast to Profits Workshop - Brendan Boyd');
+        const description = encodeURIComponent('Learn how to monetize your podcast without sponsors or a huge audience. Zoom link will be sent to your email.');
+        const startDate = new Date(workshopDate);
+        startDate.setHours(19, 30, 0, 0); // 7:30 PM EST
+        const endDate = new Date(startDate);
+        endDate.setMinutes(endDate.getMinutes() + 90);
+
+        // Google Calendar
+        const googleStart = startDate.toISOString().replace(/-|:|\.\d\d\d/g, '');
+        const googleEnd = endDate.toISOString().replace(/-|:|\.\d\d\d/g, '');
+        document.getElementById('googleCal').href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${googleStart}/${googleEnd}&details=${description}`;
+
+        // Social sharing
+        function shareTwitter() {
+            window.open(`https://twitter.com/intent/tweet?text=Just signed up for the Podcast to Profits Workshop with @BrendanBoyd! 🎙️💰&url=${encodeURIComponent(window.location.origin)}`, '_blank');
+        }
+
+        function shareFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}`, '_blank');
+        }
+
+        function shareLinkedIn() {
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}`, '_blank');
+        }
+    </script>
+</body>
+</html>

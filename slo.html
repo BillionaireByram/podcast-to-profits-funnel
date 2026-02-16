@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Offer | Podcast to Profits</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --accent: #F59E0B;
+            --success: #22C55E;
+            --bg-dark: #0A0A0F;
+            --bg-card: #13131A;
+            --bg-elevated: #1A1A24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Confirmation Banner */
+        .confirmation-banner {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .confirmation-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .confirmation-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .confirmation-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* SLO Header */
+        .slo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .wait-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .slo-header h1 {
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .slo-header h1 span {
+            color: var(--accent);
+        }
+
+        .slo-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Offer Card */
+        .offer-card {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .offer-header {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.05) 100%);
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .offer-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .offer-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .offer-body {
+            padding: 32px;
+        }
+
+        .price-container {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .original-price {
+            font-size: 24px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-bottom: 8px;
+        }
+
+        .sale-price {
+            font-size: 56px;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-note {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .offer-features {
+            margin-bottom: 32px;
+        }
+
+        .offer-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .offer-feature:last-child {
+            border-bottom: none;
+        }
+
+        .offer-feature-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--success);
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .offer-feature-text h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .offer-feature-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .offer-feature-value {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .btn-cta {
+            width: 100%;
+            padding: 18px 24px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-skip {
+            width: 100%;
+            padding: 14px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-skip:hover {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+        }
+
+        /* Guarantee */
+        .guarantee {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .guarantee-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(34, 197, 94, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .guarantee-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .guarantee-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Urgency Timer */
+        .urgency-bar {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 16px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .urgency-bar p {
+            font-size: 14px;
+            color: #EF4444;
+        }
+
+        .urgency-bar span {
+            font-weight: 700;
+        }
+
+        /* Footer Note */
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .confirmation-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .offer-body {
+                padding: 24px;
+            }
+
+            .sale-price {
+                font-size: 44px;
+            }
+
+            .guarantee {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Confirmation Banner -->
+        <div class="confirmation-banner">
+            <div class="confirmation-icon">✓</div>
+            <div class="confirmation-text">
+                <h3>You're Registered for the Workshop!</h3>
+                <p>Check your email for confirmation and calendar invite.</p>
+            </div>
+        </div>
+
+        <!-- SLO Header -->
+        <div class="slo-header">
+            <div class="wait-badge">⚡ One-Time Offer — Only Available Now</div>
+            <h1>Want to Get a <span>Head Start</span> Before the Workshop?</h1>
+            <p>Get instant access to the Podcast Monetization Quick-Start Kit and start implementing strategies TODAY.</p>
+        </div>
+
+        <!-- Urgency Timer -->
+        <div class="urgency-bar">
+            <p>⏰ This offer expires in <span id="timer">14:59</span> minutes</p>
+        </div>
+
+        <!-- Offer Card -->
+        <div class="offer-card">
+            <div class="offer-header">
+                <h2>🎁 Podcast Monetization Quick-Start Kit</h2>
+                <p>Everything you need to start monetizing before the workshop</p>
+            </div>
+
+            <div class="offer-body">
+                <div class="price-container">
+                    <div class="original-price">$197</div>
+                    <div class="sale-price">$47</div>
+                    <p class="price-note">One-time payment • Instant access</p>
+                </div>
+
+                <div class="offer-features">
+                    <div class="offer-feature">
+                        <div class="offer-feature-icon">✓</div>
+                        <div class="offer-feature-text">
+                            <h4>Podcast Monetization Blueprint PDF</h4>
+                            <p>Step-by-step guide to setting up your first revenue stream</p>
+                        </div>
+                        <span class="offer-feature-value">$47 value</span>
+                    </div>
+
+                    <div class="offer-feature">
+                        <div class="offer-feature-icon">✓</div>
+                        <div class="offer-feature-text">
+                            <h4>High-Ticket Offer Template Pack</h4>
+                            <p>Swipe files and templates for creating offers that sell</p>
+                        </div>
+                        <span class="offer-feature-value">$67 value</span>
+                    </div>
+
+                    <div class="offer-feature">
+                        <div class="offer-feature-icon">✓</div>
+                        <div class="offer-feature-text">
+                            <h4>Podcast to Profit Funnel Map</h4>
+                            <p>Visual roadmap showing exactly how to turn listeners into buyers</p>
+                        </div>
+                        <span class="offer-feature-value">$37 value</span>
+                    </div>
+
+                    <div class="offer-feature">
+                        <div class="offer-feature-icon">✓</div>
+                        <div class="offer-feature-text">
+                            <h4>BONUS: Private Community Access</h4>
+                            <p>Connect with other podcasters on the same journey</p>
+                        </div>
+                        <span class="offer-feature-value">$47 value</span>
+                    </div>
+                </div>
+
+                <button class="btn-cta" onclick="window.location.href='thank-you.html?purchased=true'">
+                    Yes! Give Me Instant Access for $47 →
+                </button>
+
+                <button class="btn-skip" onclick="window.location.href='thank-you.html'">
+                    No thanks, I'll wait for the workshop
+                </button>
+            </div>
+        </div>
+
+        <!-- Guarantee -->
+        <div class="guarantee">
+            <div class="guarantee-icon">🛡️</div>
+            <div class="guarantee-text">
+                <h3>30-Day Money-Back Guarantee</h3>
+                <p>If you don't find the Quick-Start Kit valuable, just email us within 30 days for a full refund. No questions asked.</p>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            By purchasing, you agree to our Terms of Service and Privacy Policy.
+        </p>
+    </div>
+
+    <script>
+        // Countdown timer
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        updateTimer();
+
+        // Personalization
+        const regData = localStorage.getItem('registrationData');
+        if (regData) {
+            const data = JSON.parse(regData);
+            // Could personalize the page with their name
+        }
+    </script>
+</body>
+</html>
