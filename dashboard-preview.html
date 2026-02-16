@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard | Podcast to Cash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --accent: #F59E0B;
+            --success: #22C55E;
+            --danger: #EF4444;
+            --bg-dark: #0A0A0F;
+            --bg-card: #13131A;
+            --bg-elevated: #1A1A24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .dashboard-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .demo-badge {
+            background: var(--gradient);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .kpi-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-change.up { color: var(--success); }
+        .kpi-change.down { color: var(--danger); }
+
+        /* Funnel Visualization */
+        .funnel-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .funnel-section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .funnel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .funnel-stage {
+            flex: 1;
+            text-align: center;
+        }
+
+        .funnel-bar {
+            height: 60px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .funnel-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--gradient);
+            border-radius: 8px;
+        }
+
+        .funnel-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .funnel-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .funnel-arrow {
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .funnel-rate {
+            font-size: 10px;
+            color: var(--success);
+            margin-top: 4px;
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .chart-container {
+            height: 200px;
+        }
+
+        /* Watch Time Heatmap */
+        .heatmap-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .heatmap-section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .heatmap-section p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .heatmap-bar {
+            height: 40px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .heatmap-segment {
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .heatmap-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .heatmap-legend {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .activity-section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .activity-icon.green { background: rgba(34, 197, 94, 0.15); }
+        .activity-icon.blue { background: rgba(59, 130, 246, 0.15); }
+        .activity-icon.yellow { background: rgba(234, 179, 8, 0.15); }
+        .activity-icon.purple { background: rgba(139, 92, 246, 0.15); }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .activity-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .funnel {
+                flex-direction: column;
+            }
+
+            .funnel-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div>
+            <h1>Podcast to Cash Analytics</h1>
+            <p>Real-time webinar performance tracking</p>
+        </div>
+        <span class="demo-badge">📊 Demo Dashboard</span>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-label">Ad Spend (7d)</div>
+            <div class="kpi-value">$2,847</div>
+            <div class="kpi-change up">↑ 12% vs last week</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Registrations</div>
+            <div class="kpi-value">847</div>
+            <div class="kpi-change up">↑ 23% vs last week</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Show Rate</div>
+            <div class="kpi-value">38.2%</div>
+            <div class="kpi-change up">↑ 5% vs last week</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Completion Rate</div>
+            <div class="kpi-value">67%</div>
+            <div class="kpi-change down">↓ 3% vs last week</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Conversions</div>
+            <div class="kpi-value">24</div>
+            <div class="kpi-change up">↑ 8 this week</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Revenue</div>
+            <div class="kpi-value" style="color: var(--success)">$71,928</div>
+            <div class="kpi-change up">↑ 25.3x ROAS</div>
+        </div>
+    </div>
+
+    <!-- Funnel -->
+    <div class="funnel-section">
+        <h2>📈 Full Funnel Visualization</h2>
+        <div class="funnel">
+            <div class="funnel-stage">
+                <div class="funnel-bar">
+                    <div class="funnel-fill" style="height: 100%;"></div>
+                </div>
+                <div class="funnel-value">12,450</div>
+                <div class="funnel-label">Ad Clicks</div>
+            </div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-stage">
+                <div class="funnel-bar">
+                    <div class="funnel-fill" style="height: 68%;"></div>
+                </div>
+                <div class="funnel-value">847</div>
+                <div class="funnel-label">Registrations</div>
+                <div class="funnel-rate">6.8% conv</div>
+            </div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-stage">
+                <div class="funnel-bar">
+                    <div class="funnel-fill" style="height: 38%;"></div>
+                </div>
+                <div class="funnel-value">324</div>
+                <div class="funnel-label">Attendees</div>
+                <div class="funnel-rate">38.2% show</div>
+            </div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-stage">
+                <div class="funnel-bar">
+                    <div class="funnel-fill" style="height: 67%;"></div>
+                </div>
+                <div class="funnel-value">217</div>
+                <div class="funnel-label">75%+ Watch</div>
+                <div class="funnel-rate">67% complete</div>
+            </div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-stage">
+                <div class="funnel-bar">
+                    <div class="funnel-fill" style="height: 11%; background: var(--success);"></div>
+                </div>
+                <div class="funnel-value">24</div>
+                <div class="funnel-label">Purchases</div>
+                <div class="funnel-rate">11% close</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Watch Time Heatmap -->
+    <div class="heatmap-section">
+        <h2>🔥 Watch Time Heatmap</h2>
+        <p>See exactly where viewers drop off — optimize your content in real-time</p>
+        <div class="heatmap-bar">
+            <div class="heatmap-segment" style="width: 15%; background: #22C55E;"></div>
+            <div class="heatmap-segment" style="width: 15%; background: #22C55E;"></div>
+            <div class="heatmap-segment" style="width: 15%; background: #84CC16;"></div>
+            <div class="heatmap-segment" style="width: 15%; background: #EAB308;"></div>
+            <div class="heatmap-segment" style="width: 15%; background: #F59E0B;"></div>
+            <div class="heatmap-segment" style="width: 10%; background: #EF4444;"></div>
+            <div class="heatmap-segment" style="width: 15%; background: #22C55E;"></div>
+        </div>
+        <div class="heatmap-labels">
+            <span>0:00</span>
+            <span>Intro</span>
+            <span>Strategy</span>
+            <span>Case Studies</span>
+            <span>Offer</span>
+            <span>Close</span>
+            <span>45:00</span>
+        </div>
+        <div class="heatmap-legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #22C55E;"></div>
+                <span>High retention</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #EAB308;"></div>
+                <span>Medium</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #EF4444;"></div>
+                <span>Drop-off zone</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Daily Registrations</h3>
+            <div class="chart-container">
+                <canvas id="registrationsChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Revenue Over Time</h3>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-section">
+        <h2>⚡ Live Activity Feed</h2>
+        <div class="activity-list">
+            <div class="activity-item">
+                <div class="activity-icon green">💰</div>
+                <div class="activity-content">
+                    <div class="activity-title">New purchase — Marcus B.</div>
+                    <div class="activity-time">2 minutes ago • Watched 89%</div>
+                </div>
+                <div class="activity-value" style="color: var(--success)">$2,997</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon blue">📝</div>
+                <div class="activity-content">
+                    <div class="activity-title">New registration — Sarah K.</div>
+                    <div class="activity-time">5 minutes ago • From FB Ad #3</div>
+                </div>
+                <div class="activity-value">$3.37 CPL</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon yellow">⚠️</div>
+                <div class="activity-content">
+                    <div class="activity-title">High-intent drop-off — Jessica T.</div>
+                    <div class="activity-time">8 minutes ago • Watched 74%</div>
+                </div>
+                <div class="activity-value">Auto-email sent</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon purple">🎯</div>
+                <div class="activity-content">
+                    <div class="activity-title">Webinar completed — Derek W.</div>
+                    <div class="activity-time">12 minutes ago • Watched 100%</div>
+                </div>
+                <div class="activity-value">Sales call booked</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Registrations Chart
+        const regCtx = document.getElementById('registrationsChart').getContext('2d');
+        new Chart(regCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Registrations',
+                    data: [98, 124, 145, 112, 156, 189, 123],
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#8B5CF6'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#71717A' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    },
+                    y: {
+                        ticks: { color: '#71717A' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    }
+                }
+            }
+        });
+
+        // Revenue Chart
+        const revCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [5994, 8991, 11988, 5994, 14985, 17982, 5994],
+                    backgroundColor: '#22C55E',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#71717A' },
+                        grid: { display: false }
+                    },
+                    y: {
+                        ticks: { 
+                            color: '#71717A',
+                            callback: value => '$' + (value/1000) + 'k'
+                        },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Training | Podcast to Cash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --accent: #F59E0B;
+            --success: #22C55E;
+            --bg-dark: #0A0A0F;
+            --bg-card: #13131A;
+            --bg-elevated: #1A1A24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --border: rgba(255, 255, 255, 0.08);
+            --gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #EF4444;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #EF4444;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        .viewer-count {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .viewer-count svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+
+        /* Video Section */
+        .video-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            border: 1px solid var(--border);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            cursor: pointer;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .play-button svg {
+            width: 32px;
+            height: 32px;
+            margin-left: 4px;
+        }
+
+        .video-placeholder p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .progress-time {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-elevated);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 100px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-milestones {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .milestone {
+            font-size: 10px;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .milestone-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+        }
+
+        .milestone-dot.reached {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Host Card */
+        .host-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .host-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .host-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .host-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .host-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .host-bio {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* CTA Card */
+        .cta-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .cta-card.active {
+            opacity: 1;
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .cta-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .cta-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .cta-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .cta-price .original {
+            font-size: 18px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .cta-price .current {
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .btn-cta {
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-cta:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .cta-note {
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Chat Section */
+        .chat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .chat-content {
+            flex: 1;
+        }
+
+        .chat-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .chat-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .chat-input-wrapper {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Tracking Demo Banner */
+        .tracking-banner {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tracking-banner svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .tracking-info h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .tracking-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .tracking-stats {
+            display: flex;
+            gap: 24px;
+            margin-left: auto;
+        }
+
+        .tracking-stat {
+            text-align: right;
+        }
+
+        .tracking-stat .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .tracking-stat .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Mobile */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .tracking-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .tracking-stats {
+                margin-left: 0;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="live-badge">
+            <span class="live-dot"></span>
+            LIVE NOW
+        </div>
+        <div class="viewer-count">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <span id="viewerCount">147</span> watching
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Video Section -->
+        <div class="video-section">
+            <!-- Tracking Banner (Demo) -->
+            <div class="tracking-banner">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <div class="tracking-info">
+                    <h4>📊 Real-Time Analytics (Demo)</h4>
+                    <p>Every action tracked — watch time, engagement, drop-offs, conversions</p>
+                </div>
+                <div class="tracking-stats">
+                    <div class="tracking-stat">
+                        <div class="value" id="watchPercent">0%</div>
+                        <div class="label">Watch %</div>
+                    </div>
+                    <div class="tracking-stat">
+                        <div class="value" id="engagementScore">0</div>
+                        <div class="label">Engagement</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Player -->
+            <div class="video-wrapper">
+                <div class="video-placeholder" onclick="startDemo()">
+                    <div class="play-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <p>Click to start demo presentation</p>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-label">Webinar Progress</span>
+                    <span class="progress-time"><span id="currentTime">0:00</span> / 45:00</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-milestones">
+                    <div class="milestone">
+                        <span class="milestone-dot reached"></span>
+                        <span>Intro</span>
+                    </div>
+                    <div class="milestone">
+                        <span class="milestone-dot" id="milestone1"></span>
+                        <span>Strategy</span>
+                    </div>
+                    <div class="milestone">
+                        <span class="milestone-dot" id="milestone2"></span>
+                        <span>Case Studies</span>
+                    </div>
+                    <div class="milestone">
+                        <span class="milestone-dot" id="milestone3"></span>
+                        <span>Offer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Host Card -->
+            <div class="host-card">
+                <div class="host-header">
+                    <div class="host-avatar">🎙️</div>
+                    <div class="host-info">
+                        <h3>Brendan Boyd</h3>
+                        <p>Podcast Monetization Expert</p>
+                    </div>
+                </div>
+                <p class="host-bio">Teaching podcasters how to generate $100K+ without sponsors, brand deals, or a massive audience.</p>
+            </div>
+
+            <!-- CTA Card -->
+            <div class="cta-card" id="ctaCard">
+                <h3>🔥 Special Offer Unlocks Soon</h3>
+                <p>Keep watching to unlock exclusive pricing</p>
+                <div class="cta-price">
+                    <span class="original">$4,997</span>
+                    <span class="current">$2,997</span>
+                </div>
+                <button class="btn-cta" id="ctaButton" disabled>Unlocks at 75%</button>
+                <p class="cta-note">Payment plans available • 30-day guarantee</p>
+            </div>
+
+            <!-- Chat -->
+            <div class="chat-card">
+                <div class="chat-header">💬 Live Chat</div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message">
+                        <div class="chat-avatar">MB</div>
+                        <div class="chat-content">
+                            <div class="chat-name">Marcus B.</div>
+                            <div class="chat-text">This is exactly what I needed! 🔥</div>
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar">JT</div>
+                        <div class="chat-content">
+                            <div class="chat-name">Jessica T.</div>
+                            <div class="chat-text">Love the no-sponsor approach</div>
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar">DW</div>
+                        <div class="chat-content">
+                            <div class="chat-name">Derek W.</div>
+                            <div class="chat-text">Been podcasting for 2 years, finally ready to monetize</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" placeholder="Type a message...">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let demoRunning = false;
+        let progress = 0;
+        let engagement = 0;
+
+        const chatMessages = [
+            { name: "Sarah K.", initials: "SK", text: "This is gold! Taking notes 📝" },
+            { name: "Mike R.", initials: "MR", text: "Wait, you don't need a big audience??" },
+            { name: "Lisa M.", initials: "LM", text: "The case studies are insane" },
+            { name: "Chris P.", initials: "CP", text: "I've been doing this all wrong 😅" },
+            { name: "Amanda J.", initials: "AJ", text: "Just signed up for the offer! 🙌" },
+            { name: "Kevin D.", initials: "KD", text: "Best webinar I've attended this year" },
+            { name: "Rachel S.", initials: "RS", text: "The $10K/month roadmap is clear now" },
+            { name: "Tom H.", initials: "TH", text: "Brendan always delivers 💯" }
+        ];
+
+        function startDemo() {
+            if (demoRunning) return;
+            demoRunning = true;
+            
+            document.querySelector('.video-placeholder').innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="font-size: 24px; margin-bottom: 8px;">🎬 Demo Mode Active</h2>
+                    <p style="color: var(--text-secondary);">Simulating webinar playback...</p>
+                </div>
+            `;
+
+            // Simulate progress
+            const progressInterval = setInterval(() => {
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    return;
+                }
+                
+                progress += 0.5;
+                engagement = Math.min(100, engagement + Math.random() * 2);
+                
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('watchPercent').textContent = Math.round(progress) + '%';
+                document.getElementById('engagementScore').textContent = Math.round(engagement);
+                
+                // Update time
+                const totalSeconds = Math.round((progress / 100) * 45 * 60);
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+                document.getElementById('currentTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                
+                // Milestones
+                if (progress >= 25) document.getElementById('milestone1').classList.add('reached');
+                if (progress >= 50) document.getElementById('milestone2').classList.add('reached');
+                if (progress >= 75) {
+                    document.getElementById('milestone3').classList.add('reached');
+                    document.getElementById('ctaCard').classList.add('active');
+                    document.getElementById('ctaButton').disabled = false;
+                    document.getElementById('ctaButton').textContent = 'Get Instant Access →';
+                }
+            }, 200);
+
+            // Simulate chat
+            let chatIndex = 0;
+            const chatInterval = setInterval(() => {
+                if (chatIndex >= chatMessages.length) {
+                    clearInterval(chatInterval);
+                    return;
+                }
+                
+                const msg = chatMessages[chatIndex];
+                const chatContainer = document.getElementById('chatMessages');
+                
+                chatContainer.innerHTML += `
+                    <div class="chat-message">
+                        <div class="chat-avatar">${msg.initials}</div>
+                        <div class="chat-content">
+                            <div class="chat-name">${msg.name}</div>
+                            <div class="chat-text">${msg.text}</div>
+                        </div>
+                    </div>
+                `;
+                
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                chatIndex++;
+            }, 3000);
+
+            // Simulate viewer count fluctuation
+            setInterval(() => {
+                const current = parseInt(document.getElementById('viewerCount').textContent);
+                const change = Math.floor(Math.random() * 5) - 2;
+                document.getElementById('viewerCount').textContent = Math.max(100, current + change);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
